@@ -23,17 +23,16 @@ public class Week2Question4 {
     
     public static void main(String[] args) {
 
+        printXor(ctPairs);
+        printXor(ctPairs2);
+        
+    }
+
+    private static void printXor(String[][] ctPairs) {
         for (String[] strs : ctPairs) {
             String xorOut = CipherUtils.hexStringXor(strs[0], strs[1]);
             LOGGER.info(strs[0] + " ^ " + strs[1] + " = " + xorOut);            
         }
-
-        for (String[] strs : ctPairs2) {
-            String xorOut = CipherUtils.hexStringXor(strs[0], strs[1]);
-            LOGGER.info(strs[0] + " ^ " + strs[1] + " = " + xorOut);            
-        }
-        
-        
     }
 
 }
