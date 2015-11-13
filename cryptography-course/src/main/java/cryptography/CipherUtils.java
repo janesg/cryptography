@@ -150,6 +150,41 @@ public class CipherUtils {
         return data;
     }    
 
+    /**
+     * Return the passed in byte array as a hex string.
+     * 
+     * @param data
+     *            the bytes to be converted.
+     * @return a hex representation of data.
+     */
+    public static String byteArrayToHexString(byte[] data) {
+        return byteArrayToHexString(data, data.length);
+    }
+    
+    /**
+     * Return length many bytes of the passed in byte array as a hex string.
+     * 
+     * @param data
+     *            the bytes to be converted.
+     * @param length
+     *            the number of bytes in the data block to be converted.
+     * @return a hex representation of length bytes of data.
+     */
+    public static String byteArrayToHexString(byte[] data, int length) {
+        StringBuffer buf = new StringBuffer();
+
+        String digits = "0123456789abcdef";
+        
+        for (int i = 0; i != length; i++) {
+            int v = data[i] & 0xff;
+
+            buf.append(digits.charAt(v >> 4));
+            buf.append(digits.charAt(v & 0xf));
+        }
+
+        return buf.toString();
+    }
+
     public static String asciiStringXorHexString(String str1, String str2) {        
         return hexStringXor(asciiStringToHexString(str1), asciiStringToHexString(str2));
     }
