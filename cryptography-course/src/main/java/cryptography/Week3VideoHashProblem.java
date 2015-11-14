@@ -28,19 +28,18 @@ public class Week3VideoHashProblem {
         File f = new File(FILE_PATH);
         LOGGER.debug("File length = " + f.length() + " bytes");
         
-        RandomAccessFile rf = null;
+        // Use Java 7 'try with resources' to handle closing resource automatically
+        // Open video file for read-only        
+        try (RandomAccessFile rf = new RandomAccessFile(f, "r")) {
 
-        try {
-            // Open video file for read-only
-            rf = new RandomAccessFile(f, "r");
-
-            long lastChunkSize = f.length() % 1024;
+            long lastChunkSize = f.length() % 1024 == 0 ? 1024 : f.length() % 1024;
             LOGGER.debug("Last chunk size = " + lastChunkSize);
-            LOGGER.debug("Index Start = " + (f.length() - lastChunkSize));
+            long startIndex = f.length() - lastChunkSize;
+            LOGGER.debug("Index start = " + startIndex);
             
             // Read backwards through the file in chunks of 1024 bytes
             // Start with the last chunk which will very likely be shorter
-            for (long index = f.length() - lastChunkSize; index >= 0; index -= 1024) {
+            for (long index = startIndex; index >= 0; index -= 1024) {
 
                 rf.seek(index);
 
@@ -58,11 +57,7 @@ public class Week3VideoHashProblem {
                 // Calculate the hash value
                 prevChunkHash = digest.digest();
             }
-        } finally {
-            if (rf != null) {
-                rf.close();
-            }
-        }
+        } 
 
         LOGGER.info("h0 = " + CipherUtils.byteArrayToHexString(prevChunkHash));
     }
